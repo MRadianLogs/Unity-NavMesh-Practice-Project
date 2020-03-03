@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6130,6 +6130,80 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1699653641}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1734264026
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1147366741681029434, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: detectionRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.790203
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -58.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769235060728919875, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271147450914710, guid: e8feaaef5ec7a4e47ba8e82a918e8b07,
+        type: 3}
+      propertyPath: m_Name
+      value: FleeerEnemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e8feaaef5ec7a4e47ba8e82a918e8b07, type: 3}
 --- !u!4 &1788161130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 117138968402346854, guid: 668dce8061f950a4cb6548500d20b52e,
@@ -7740,8 +7814,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7541902759036072978}
   m_Layer: 0
-  m_Name: FleeerEnemy
-  m_TagString: Untagged
+  m_Name: HerderEnemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7954,7 +8028,7 @@ GameObject:
   - component: {fileID: 4695064169761800811}
   - component: {fileID: 4695064169761800808}
   m_Layer: 0
-  m_Name: Fleeer
+  m_Name: Herder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7969,7 +8043,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4695064169761800810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04f50a5784b9b1b45aeea756807e48e5, type: 3}
+  m_Script: {fileID: 11500000, guid: c509e563556d27a49a60c52a078ea8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAgent: {fileID: 4695064169761800808}
@@ -7979,8 +8053,8 @@ MonoBehaviour:
   patrolPoint2: {fileID: 4695064169910512730}
   patrolPoint3: {fileID: 4695064170514874193}
   patrolPoint4: {fileID: 4695064170072751234}
-  detectionRadius: 20
-  fleeOffset: 5
+  detectionRadius: 10
+  herdOffset: 5
 --- !u!4 &4695064169910512730
 Transform:
   m_ObjectHideFlags: 0

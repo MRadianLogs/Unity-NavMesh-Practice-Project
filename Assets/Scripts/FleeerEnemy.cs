@@ -103,12 +103,11 @@ public class FleeerEnemy : MonoBehaviour
 
     private void ReactToPlayer()
     {
-                                                                                //TODO: Fix Vector math!
         //Flee from the player! Run in the opposite direction!
-        //Vector3 distanceVector = transform.position - player.transform.position;
-        //Vector3 distanceVectorNormalized = distanceVector.normalized;
-        //Vector3 targetDistance = (distanceVectorNormalized * fleeOffset);
-        enemyAgent.SetDestination(transform.position - player.transform.position);
+        Vector3 distanceVector = transform.position - player.transform.position;
+        Vector3 distanceVectorNormalized = distanceVector.normalized;
+        Vector3 targetDistance = (distanceVectorNormalized * fleeOffset);
+        enemyAgent.SetDestination(transform.position + targetDistance);
 
     }
 }
