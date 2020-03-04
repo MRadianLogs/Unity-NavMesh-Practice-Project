@@ -10,7 +10,7 @@ public class HerderEnemy : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent enemyAgent = null;
 
     [SerializeField]
-    private bool isPointsPatrolType = true; //If true, the enemy patrols using 4 points in the map. Else, will use a  patroll circle radius.
+    private bool isPointsPatrolType = true; //If true, the enemy patrols using 4 points in the map. Else, will use a patrol circle radius.
     [SerializeField]
     private int patrolCircleRadius = 5; //Used if isPointsPatrolType is false.
     //[SerializeField]
@@ -109,7 +109,8 @@ public class HerderEnemy : MonoBehaviour
         Vector3 currentPosition = transform.position;
         foreach (GameObject otherEnemy in enemies)
         {
-            if (!otherEnemy.Equals(this))
+            //Debug.Log("Gameobject: " + gameObject.transform.root.gameObject); //Needed to compare with the main gameobject that this script is placed on, not this gameobject. Dont use this anymore.
+            if (!otherEnemy.Equals(gameObject)) 
             {
                 Vector3 distanceDifference = otherEnemy.transform.position - currentPosition;
                 float currentDistance = distanceDifference.sqrMagnitude;
@@ -127,8 +128,8 @@ public class HerderEnemy : MonoBehaviour
     {
         //Find the nearest enemy.
         GameObject closestEnemy = FindClosestEnemy();
-        Debug.Log("Closest Enemy: " + closestEnemy.name);
-
+        //Debug.Log("Closest Enemy: " + closestEnemy.name);
+        //Debug.Log("Closest Enemy Pos: " + closestEnemy.transform.position);
         //Herd the player with the nearest enemy! Position itself behind the player, opposite the enemy.
         Vector3 distanceVector = closestEnemy.transform.position - player.transform.position;
         Vector3 distanceVectorNormalized = distanceVector.normalized;

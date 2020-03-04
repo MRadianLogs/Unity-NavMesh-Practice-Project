@@ -11,7 +11,7 @@ public class FleeerEnemy : MonoBehaviour
     private NavMeshAgent enemyAgent = null;
 
     [SerializeField]
-    private bool isPointsPatrolType = true; //If true, the enemy patrols using 4 points in the map. Else, will use a  patroll circle radius.
+    private bool isPointsPatrolType = true; //If true, the enemy patrols using 4 points in the map. Else, will use a patrol circle radius.
     [SerializeField]
     private int patrolCircleRadius = 5; //Used if isPointsPatrolType is false.
     //[SerializeField]
