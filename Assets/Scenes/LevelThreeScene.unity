@@ -229,7 +229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588463128}
   m_LocalRotation: {x: 0.3684491, y: 0, z: 0, w: 0.9296479}
-  m_LocalPosition: {x: 0, y: 29.88, z: -62.1}
+  m_LocalPosition: {x: 0, y: 29.88, z: -40.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 893597020}
   m_Layer: 0
   m_Name: SimGridMap
-  m_TagString: Untagged
+  m_TagString: SimMap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -371,11 +371,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b12ada15a754bd64d84cb66b9d6a858c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 100
+  mapSize: 50
   cellSize: 1
-  cellSizeOffset: 0.5
   mapZeroZeroPosition: {fileID: 1592811713}
-  testObject: {fileID: 4958657976394557580, guid: 1e27fe0a6757a4c4f80674ee55a692b1,
+  testObjectPrefab: {fileID: 4958657976394557580, guid: 1e27fe0a6757a4c4f80674ee55a692b1,
+    type: 3}
+  testNPCPrefab: {fileID: 2293600851837208890, guid: 79f8c75ce34b5534d8823dd08584fa03,
     type: 3}
 --- !u!1 &944365623
 GameObject:
@@ -466,7 +467,7 @@ Transform:
   m_GameObject: {fileID: 944365623}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 168086533}
   m_RootOrder: 0
@@ -495,7 +496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592811712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -50, y: 0, z: 50}
+  m_LocalPosition: {x: -25, y: 0, z: 25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 893597019}
