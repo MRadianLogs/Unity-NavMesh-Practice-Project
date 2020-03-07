@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Enemy
   - SimMap
+  - SimPath
+  - SimHouse
+  - SimStore
+  - SimWell
   layers:
   - Default
   - TransparentFX

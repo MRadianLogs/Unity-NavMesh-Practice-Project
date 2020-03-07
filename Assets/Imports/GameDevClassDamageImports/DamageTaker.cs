@@ -8,7 +8,7 @@ public class DamageTaker : MonoBehaviour
     [SerializeField] int hitPoints = 20;
     // Could add evasion and damage mitigation capabilities
 
-    [SerializeField] ScrollingText damageText;
+    [SerializeField] ScrollingText damageText = null;
     [SerializeField] Color damageTextColor = Color.red;
     Vector3 textOffset = new Vector3(0f, 1.5f, 0f);
 

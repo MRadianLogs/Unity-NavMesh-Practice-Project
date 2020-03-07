@@ -5,27 +5,89 @@ using UnityEngine;
 public class SimGridMap : MonoBehaviour
 {
     [SerializeField]
-    private int[][] mapGrid; //Each cell represents a cell in the map.
+    private int[,] mapGrid = null; //private int[][] mapGrid; //Each cell represents a cell in the map. The values are the path costs.
     [SerializeField]
-    private int mapSize; //How many cells (mapsize x mapsize) are in the map.
+    private int mapSize = -1; //How many cells (mapsize x mapsize) are in the map.
     [SerializeField]
-    private int cellSize; //How big each cell should be, meaning how much space it represents in the map.
-    private float cellSizeOffset; //The offset to get to the middle of the cell. Half the cellSize.
+    private int cellSize = -1; //How big each cell should be, meaning how much space it represents in the map.
+    [SerializeField]
+    private float cellSizeOffset = -1; //The offset to get to the middle of the cell. Half the cellSize.
 
     [SerializeField]
-    private Transform mapZeroZeroPosition; //The top left position of the map. The x position is the col, z is the row.
+    private Transform mapZeroZeroPosition = null; //The top left position of the map. The x position is the col, z is the row.
 
     [SerializeField]
-    private GameObject testObjectPrefab;
+    private GameObject testObject = null;
+
     [SerializeField]
-    private GameObject testNPCPrefab;
-    private GameObject testNPC;
+    private GameObject testNPCPrefab = null;
+    private GameObject testNPC = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        mapGrid = new int[mapSize][];
-        cellSizeOffset = (float)cellSize / 2;
+        mapGrid = new int[mapSize, mapSize]; //mapGrid = new int[mapSize][];
+        cellSizeOffset = (float)cellSize / 2; //We want the offset to put items in the middle(half) of a cell.
+
+        //Pathing costs:
+        //Grass is 3; (This is null in the grid in order to save performace of running through the whole grid.)
+        //Path is 1.
+        //House is -1. Not allowed.
+        //Store is -1. Not allowed.
+        //Well is -1. Not allowed.
+        
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimPath"))
+        {
+            int row = GetCellRowFromMapPosition(item.transform.position);
+            int col = GetCellColFromMapPosition(item.transform.position);
+            mapGrid[row,col] = 1;
+        }
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimHouse"))
+        {
+            int row = GetCellRowFromMapPosition(item.transform.position);
+            int col = GetCellColFromMapPosition(item.transform.position);
+            mapGrid[row,col] = -1;
+        }
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimStore"))
+        {
+            int row = GetCellRowFromMapPosition(item.transform.position);
+            int col = GetCellColFromMapPosition(item.transform.position);
+            mapGrid[row,col] = -1;
+        }
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimWell"))
+        {
+            Debug.Log("Item: " + item.name);
+            int row = GetCellRowFromMapPosition(item.transform.position);
+            Debug.Log("Row: " + row);
+            int col = GetCellColFromMapPosition(item.transform.position);
+            Debug.Log("Col: " + col);
+            mapGrid[row,col] = -1;
+        }
+        
+        /*
+        foreach (GameObject gridItem in gridItemsFolder.transform.)
+        {
+            int row = GetCellRowFromMapPosition(gridItem.transform.position);
+            int col = GetCellColFromMapPosition(gridItem.transform.position);
+            string itemTag = gridItem.tag;
+
+            switch (itemTag)
+            {
+                case "SimPath":
+                    mapGrid[row][col] = 0;
+                    break;
+                case "SimHouse":
+                    mapGrid[row][col] = 1;
+                    break;
+                case "SimStore":
+                    mapGrid[row][col] = 2;
+                    break;
+                case "SimWell":
+                    mapGrid[row][col] = 3;
+                    break;
+            }
+        }
+        */
 
         /*
         //Testing cell placements.
@@ -43,21 +105,26 @@ public class SimGridMap : MonoBehaviour
         InsertObjectInMapAtPosition(testObject, 1, 2);
         */
 
-        testNPC = InsertReturnObjectInMapAtPosition(testNPCPrefab, 1, 2);
-        
+        //testNPC = InsertReturnObjectInMapAtPosition(testNPCPrefab, 0, 0);
+
+        //Debug.Log("Test object in row: " + GetCellsFromMapPosition(testObject.transform.position));
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Time.fixedTime == 5f)
         {
             Debug.Log("Asking NPC to move.");
-            testNPC.GetComponent<SimNPC>().ShiftPositionUp();
+            testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1,1));
+            testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1, 2));
+            //testNPC.GetComponent<SimNPC>().ShiftPositionUp();
         }
-        
-        
-        
+        */
+        //Debug.Log("Test object row,col: " + GetCellRowFromMapPosition(testObject.transform.position) + ", " +GetCellColFromMapPosition(testObject.transform.position));
+
+
     }
 
     public int GetCellSize()
@@ -70,13 +137,29 @@ public class SimGridMap : MonoBehaviour
         return new Vector3((mapZeroZeroPosition.position.x + ((cellSize * col) + cellSizeOffset)), 0, (mapZeroZeroPosition.position.z - ((cellSize * row) + cellSizeOffset)));
     }
 
+    public int GetCellRowFromMapPosition(Vector3 mapPosition)
+    {
+        int row = (int) Mathf.Round(mapPosition.z - mapZeroZeroPosition.position.z + cellSizeOffset) / (-cellSize);
+        return row;
+    }
+    public int GetCellColFromMapPosition(Vector3 mapPosition)
+    {
+        int col = (int)Mathf.Round(mapPosition.x - mapZeroZeroPosition.position.x - cellSizeOffset) / (cellSize);
+        return col;
+    }
+
     public void InsertObjectInMapAtPosition(GameObject newObject, int row, int col)
     {
-        Instantiate(newObject, GetCellMapPosition(row, col), mapZeroZeroPosition.rotation);
+        Instantiate(newObject, GetCellMapPosition(row, col), this.transform.rotation);
     }
 
     public GameObject InsertReturnObjectInMapAtPosition(GameObject newObject, int row, int col)
     {
         return Instantiate(newObject, GetCellMapPosition(row, col), mapZeroZeroPosition.rotation);
+    }
+
+    public int GetCostOfGridAtPosition(int row, int col)
+    {
+        return mapGrid[row,col];
     }
 }
