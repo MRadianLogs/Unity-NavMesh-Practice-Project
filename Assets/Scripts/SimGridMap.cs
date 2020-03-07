@@ -56,11 +56,11 @@ public class SimGridMap : MonoBehaviour
         }
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimWell"))
         {
-            Debug.Log("Item: " + item.name);
+            //Debug.Log("Item: " + item.name);
             int row = GetCellRowFromMapPosition(item.transform.position);
-            Debug.Log("Row: " + row);
+            //Debug.Log("Row: " + row);
             int col = GetCellColFromMapPosition(item.transform.position);
-            Debug.Log("Col: " + col);
+            //Debug.Log("Col: " + col);
             mapGrid[row,col] = -1;
         }
         
@@ -144,7 +144,7 @@ public class SimGridMap : MonoBehaviour
     }
     public int GetCellColFromMapPosition(Vector3 mapPosition)
     {
-        int col = (int)Mathf.Round(mapPosition.x - mapZeroZeroPosition.position.x - cellSizeOffset) / (cellSize);
+        int col = (int) Mathf.Round(mapPosition.x - mapZeroZeroPosition.position.x - cellSizeOffset) / (cellSize);
         return col;
     }
 
