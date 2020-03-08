@@ -10,6 +10,8 @@ TagManager:
   - SimHouse
   - SimStore
   - SimWell
+  - GameManager
+  - LevelEndGoal
   layers:
   - Default
   - TransparentFX

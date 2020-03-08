@@ -5,7 +5,8 @@ using UnityEngine;
 public class SimGridMap : MonoBehaviour
 {
     [SerializeField]
-    private int[,] mapGrid = null; //private int[][] mapGrid; //Each cell represents a cell in the map. The values are the path costs.
+    //private int[,] mapGrid = null; //private int[][] mapGrid; //Each cell represents a cell in the map. The values are the path costs.
+    private SimGridCell[,] mapGrid = null;
     [SerializeField]
     private int mapSize = -1; //How many cells (mapsize x mapsize) are in the map.
     [SerializeField]
@@ -16,17 +17,20 @@ public class SimGridMap : MonoBehaviour
     [SerializeField]
     private Transform mapZeroZeroPosition = null; //The top left position of the map. The x position is the col, z is the row.
 
-    [SerializeField]
-    private GameObject testObject = null;
+    //[SerializeField]
+    //private GameObject testObject = null;
 
     [SerializeField]
     private GameObject testNPCPrefab = null;
     private GameObject testNPC = null;
+    [SerializeField]
+    private GameObject testDest = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        mapGrid = new int[mapSize, mapSize]; //mapGrid = new int[mapSize][];
+        //mapGrid = new int[mapSize, mapSize]; //mapGrid = new int[mapSize][];
+        mapGrid = new SimGridCell[mapSize, mapSize];
         cellSizeOffset = (float)cellSize / 2; //We want the offset to put items in the middle(half) of a cell.
 
         //Pathing costs:
@@ -35,24 +39,26 @@ public class SimGridMap : MonoBehaviour
         //House is -1. Not allowed.
         //Store is -1. Not allowed.
         //Well is -1. Not allowed.
-        
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimPath"))
         {
             int row = GetCellRowFromMapPosition(item.transform.position);
             int col = GetCellColFromMapPosition(item.transform.position);
-            mapGrid[row,col] = 1;
+            //mapGrid[row,col] = 1;
+            mapGrid[row, col] = new SimGridCell(1, row, col);
         }
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimHouse"))
         {
             int row = GetCellRowFromMapPosition(item.transform.position);
             int col = GetCellColFromMapPosition(item.transform.position);
-            mapGrid[row,col] = -1;
+            //mapGrid[row,col] = -1;
+            mapGrid[row, col] = new SimGridCell(-1, row, col);
         }
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimStore"))
         {
             int row = GetCellRowFromMapPosition(item.transform.position);
             int col = GetCellColFromMapPosition(item.transform.position);
-            mapGrid[row,col] = -1;
+            //mapGrid[row,col] = -1;
+            mapGrid[row, col] = new SimGridCell(-1, row, col);
         }
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("SimWell"))
         {
@@ -61,7 +67,19 @@ public class SimGridMap : MonoBehaviour
             //Debug.Log("Row: " + row);
             int col = GetCellColFromMapPosition(item.transform.position);
             //Debug.Log("Col: " + col);
-            mapGrid[row,col] = -1;
+            //mapGrid[row,col] = -1;
+            mapGrid[row, col] = new SimGridCell(-1, row, col);
+        }
+
+        for (int i = 0; i < mapSize; i++) //For grass.
+        {
+            for(int j = 0; j < mapSize; j++)
+            {
+                if(mapGrid[i,j] == null)
+                {
+                    mapGrid[i,j] = new SimGridCell(3, i, j);
+                }
+            }
         }
         
         /*
@@ -105,7 +123,7 @@ public class SimGridMap : MonoBehaviour
         InsertObjectInMapAtPosition(testObject, 1, 2);
         */
 
-        //testNPC = InsertReturnObjectInMapAtPosition(testNPCPrefab, 0, 0);
+        testNPC = InsertReturnObjectInMapAtPosition(testNPCPrefab, 0, 0);
 
         //Debug.Log("Test object in row: " + GetCellsFromMapPosition(testObject.transform.position));
     }
@@ -113,16 +131,17 @@ public class SimGridMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+        
         if (Time.fixedTime == 5f)
         {
             Debug.Log("Asking NPC to move.");
-            testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1,1));
-            testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1, 2));
+            //testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1,1));
+            //testNPC.GetComponent<SimNPC>().AddToPath(GetCellMapPosition(1, 2));
+            testNPC.GetComponent<SimNPC>().FindAStarPathToDestination(testDest.transform.position);
             //testNPC.GetComponent<SimNPC>().ShiftPositionUp();
         }
-        */
-        //Debug.Log("Test object row,col: " + GetCellRowFromMapPosition(testObject.transform.position) + ", " +GetCellColFromMapPosition(testObject.transform.position));
+        
+        Debug.Log("Test object row,col: " + GetCellRowFromMapPosition(testDest.transform.position) + ", " +GetCellColFromMapPosition(testDest.transform.position));
 
 
     }
@@ -158,8 +177,40 @@ public class SimGridMap : MonoBehaviour
         return Instantiate(newObject, GetCellMapPosition(row, col), mapZeroZeroPosition.rotation);
     }
 
+    /* CORE IDEA CHANGED. Still needed?
     public int GetCostOfGridAtPosition(int row, int col)
     {
         return mapGrid[row,col];
+    }
+    */
+    public SimGridCell GetCell(int row, int col)
+    {
+        return mapGrid[row, col];
+    }
+
+    public List<SimGridCell> GetCellNeighbors(int cellRow, int cellCol)
+    {
+        List<SimGridCell> neighbors = new List<SimGridCell>();
+
+        for (int z = -1; z <= 1; z++) //Checking the row above, the current, and the below row of node in grid.
+        {
+            for(int x = -1; x <= 1; x++) //Checking the same, but columns.
+            {
+                if (x == 0 && z == 0)
+                    continue;
+                int rowToCheck = cellRow + z;
+                int colToCheck = cellCol + x;
+
+                if (rowToCheck >= 0 && rowToCheck < mapSize && colToCheck >= 0 && colToCheck < mapSize)
+                {
+                    if (mapGrid[rowToCheck, colToCheck] == null) //Its grass that wasnt created yet.
+                    {
+                        mapGrid[rowToCheck, colToCheck] = new SimGridCell(3, rowToCheck, colToCheck);
+                    }
+                    neighbors.Add(mapGrid[rowToCheck, colToCheck]);
+                }
+            }
+        }
+        return neighbors;
     }
 }
